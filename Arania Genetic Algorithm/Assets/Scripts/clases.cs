@@ -434,12 +434,22 @@ public class Generation
         individuos.Sort(CompararFitness);
     }
 
+    public void NormalizarFitness()
+    {
+        foreach (Genoma ind in individuos)
+        {
+            //NORMALIZO la fitness para ser sobre 1
+            ind.SetFitness((ind.GetFitness() - minFitness) / (maxFitness - minFitness));
+        }
+    }
+
     private static int CompararFitness(Genoma x, Genoma y)
     {
         // Esta función sirve para cuando llamo a la función Sort
         if (x.fitness > y.fitness) return -1;
         else return 1;
     }
+
 }
 
 

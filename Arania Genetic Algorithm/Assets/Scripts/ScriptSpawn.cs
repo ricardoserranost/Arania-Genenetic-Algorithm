@@ -24,7 +24,7 @@ public class ScriptSpawn : MonoBehaviour
     public bool OptimizarRendimiento = false;
     public float TimeScale = 10;
     public enum SerieParalelo { Serie, Paralelo };
-    public SerieParalelo dropDown;
+    public SerieParalelo DropDownSerieParalelo;
     public int IndividuosPorTanda = 50;
 
     [Space(15)]
@@ -32,8 +32,11 @@ public class ScriptSpawn : MonoBehaviour
 
     public int GenerationActual = 0;
     public List<GameObject> aranias = new List<GameObject>();
+
+    
     private float t;
     public Generation generation;
+    private int individuosSimulados = 0;
 
     void Start() {
         // Intento optimizar la simulación
@@ -43,59 +46,62 @@ public class ScriptSpawn : MonoBehaviour
             foreach(Renderer r in renderChildren) r.enabled = false;
         }
 
-        if (OptimizarRendimiento)
-        {
-            Time.timeScale = TimeScale;
-        }
 
         int i;
         if (ExperimentoON)
         {
             generation = new Generation(size_generacion, 0);
 
-            for (i = 0; i < size_generacion; i++)
+
+            if (DropDownSerieParalelo == SerieParalelo.Paralelo)
+            {
+                IndividuosPorTanda = size_generacion;
+            }
+
+            for (i = 0; i < IndividuosPorTanda && i < size_generacion; i++)
             {
                 GameObject nuevaArania = Instantiate(araniaOriginal, puntoSpawn.position, Quaternion.identity);
                 nuevaArania.GetComponent<ScriptArania>().InitArania(generation.getGenoma(i));
                 aranias.Add(nuevaArania);
             }
+            individuosSimulados = 0;
         }
     }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        int i = 0;
+        if (OptimizarRendimiento)
+        {
+            Time.timeScale = TimeScale; // Se puede poner en Start si no quiero modificarlo mientras está running
+        }
+
         if (ExperimentoON)
         {
             if(Time.time > segundosGeneration + t)
             {
-                float maxDistance = 0f;
-                float minDistance = 0f;
-                foreach(Genoma ind in generation.individuos)
+                foreach(GameObject a in aranias)
                 {
-                    ind.SetFitness(aranias[i].GetComponent<ScriptArania>().GetFitness());
-                    if (ind.GetFitness() > maxDistance) maxDistance = ind.GetFitness();
-                    if (ind.GetFitness() < minDistance) minDistance = ind.GetFitness();
-                    i++;
+                    generation.individuos[individuosSimulados].SetFitness(a.GetComponent<ScriptArania>().GetFitness());
+                    individuosSimulados++;  // individuosSimulados representa de cuántos de la generación se ha obtenido fitness
                 }
 
-                generation.maxFitness = maxDistance;
-                generation.minFitness = minDistance;
-
-                foreach (Genoma ind in generation.individuos)
+                if (individuosSimulados >= generation.GetNIndividuos()) // si es la última serie
                 {
-                    //NORMALIZO la fitness para ser sobre 1
-                    ind.SetFitness((ind.GetFitness()-minDistance)/(maxDistance-minDistance));  // Hago esta cuenta por haber valores negativos
+                    generation.Sort();
+                    generation.maxFitness = generation.individuos[0].fitness;
+                    generation.minFitness = generation.individuos[generation.individuos.Count - 1].fitness;
+                    generation.NormalizarFitness();
+
+
+                    print(Time.realtimeSinceStartup);
+
+                    generation.Save();
+
+                    generation = new Generation(generation);
+                    individuosSimulados = 0;
                 }
 
-                generation.Sort();
-
-                print(Time.realtimeSinceStartup);
-
-                generation.Save();
-
-                generation = new Generation(generation);
-                RestartAranias();
+                RespawnAranias();
 
                 t = Time.time;
             }
@@ -104,7 +110,7 @@ public class ScriptSpawn : MonoBehaviour
         }
 	}
 
-    public void RestartAranias()
+    public void RespawnAranias()
     {
         int i = 0;
         foreach(GameObject a in aranias)
@@ -115,14 +121,15 @@ public class ScriptSpawn : MonoBehaviour
 
         if(generation.generationID < NGeneraciones)
         {
-            for (i = 0; i < generation.GetNIndividuos(); i++)
+            for (i = 0; (i < (generation.GetNIndividuos() - individuosSimulados)) && (i < IndividuosPorTanda); i++)
             {
                 GameObject nuevaArania = Instantiate(araniaOriginal, puntoSpawn.position, Quaternion.identity);
-                nuevaArania.GetComponent<ScriptArania>().InitArania(generation.getGenoma(i));
+                nuevaArania.GetComponent<ScriptArania>().InitArania(generation.getGenoma(i + individuosSimulados));
                 aranias.Add(nuevaArania);
             }
         }
         else ExperimentoON = false;
 
+        print(aranias.Count);
     }
 }

@@ -148,7 +148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1166267115355866456, guid: df4823ffc85d5164daa142abb7755dc9, type: 3}
       propertyPath: m_ParentAnchorPosition.z
-      value: -0.0006000027
+      value: -0.00059999526
       objectReference: {fileID: 0}
     - target: {fileID: 1166267115355866456, guid: df4823ffc85d5164daa142abb7755dc9, type: 3}
       propertyPath: m_ParentAnchorRotation.w
@@ -460,7 +460,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4170818185786590864, guid: df4823ffc85d5164daa142abb7755dc9, type: 3}
       propertyPath: m_ParentAnchorPosition.z
-      value: -0.0006000176
+      value: -0.00060001016
       objectReference: {fileID: 0}
     - target: {fileID: 4170818185786590864, guid: df4823ffc85d5164daa142abb7755dc9, type: 3}
       propertyPath: m_ParentAnchorRotation.w
@@ -516,7 +516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5090968363673739228, guid: df4823ffc85d5164daa142abb7755dc9, type: 3}
       propertyPath: m_ParentAnchorPosition.z
-      value: -0.00039999932
+      value: -0.00040000677
       objectReference: {fileID: 0}
     - target: {fileID: 5090968363673739228, guid: df4823ffc85d5164daa142abb7755dc9, type: 3}
       propertyPath: m_ParentAnchorRotation.w
@@ -648,7 +648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6865864658113865615, guid: df4823ffc85d5164daa142abb7755dc9, type: 3}
       propertyPath: m_ParentAnchorPosition.z
-      value: -0.0002700076
+      value: -0.00027000014
       objectReference: {fileID: 0}
     - target: {fileID: 7294025286777877395, guid: df4823ffc85d5164daa142abb7755dc9, type: 3}
       propertyPath: m_ParentAnchorPosition.x
@@ -1011,15 +1011,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   araniaOriginal: {fileID: 1673560045}
   puntoSpawn: {fileID: 976629045}
-  size_generacion: 1
+  size_generacion: 10
   NGeneraciones: 5
-  segundosGeneration: 500
+  segundosGeneration: 20
   ExperimentoON: 1
   Mostrar: 1
   OptimizarRendimiento: 1
-  TimeScale: 100
-  dropDown: 0
-  IndividuosPorTanda: 50
+  TimeScale: 15
+  DropDownSerieParalelo: 0
+  IndividuosPorTanda: 3
   GenerationActual: 0
   aranias: []
 --- !u!4 &976629045
