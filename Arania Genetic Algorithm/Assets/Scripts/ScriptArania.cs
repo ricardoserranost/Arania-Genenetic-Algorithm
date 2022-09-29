@@ -47,8 +47,9 @@ public class ScriptArania : MonoBehaviour {
 
     public float GetFitness()
     {
-        // Aquí se implementa la función de fitness
+        // Aquí se implementa la FUNCIÓN DE FITNESS
 
-        return ((transform.Find("thorax").position[0] - transform.position[0]) - 0.4f*Mathf.Abs(transform.Find("thorax").position[2] - transform.position[2]));
+        return ((-transform.Find("thorax").position[0] + transform.position[0]) - 0.4f*Mathf.Abs(transform.Find("thorax").position[2] - transform.position[2]));
+        //El sentido de las x es en negativo porque el front de la araña está hacia -x
     }
 }

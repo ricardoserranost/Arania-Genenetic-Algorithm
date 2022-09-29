@@ -129,7 +129,5 @@ public class ScriptSpawn : MonoBehaviour
             }
         }
         else ExperimentoON = false;
-
-        print(aranias.Count);
     }
 }
