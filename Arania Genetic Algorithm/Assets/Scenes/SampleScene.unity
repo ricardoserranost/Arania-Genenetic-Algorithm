@@ -1280,8 +1280,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   araniaModelo: {fileID: 1673560045}
   puntoTest: {fileID: 2092707227}
-  genomaTexto: {fileID: 4900000, guid: b2c9a0194c22f9845be7a162f741a15b, type: 3}
-  ProbarON: 0
+  genomaTexto: {fileID: 4900000, guid: ff86b6236a0bb05459861a4dcf97eb01, type: 3}
+  ProbarON: 1
 --- !u!4 &2092707227
 Transform:
   m_ObjectHideFlags: 0
