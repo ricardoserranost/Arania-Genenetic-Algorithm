@@ -11,7 +11,7 @@ public class Genoma
     public int genomaID;
     public int generationID;
     public float fitness;
-    public float ratioMutation = 0.01f;
+    public float ratioMutation = 0f;
     
     
     public Genoma(int generation, int genoma)
@@ -223,14 +223,14 @@ public class Genoma
         return Random.Range(Mathf.Min(a, b) - I*alpha, Mathf.Max(a, b) + I * alpha);
     }
 
-    public void Save()
+    public void SaveTxt()
     {
         int i, j, k;
         if (!Directory.Exists("Assets/GENOMAS/GENERATION" + generationID.ToString() + "/"))
         {
             Directory.CreateDirectory("Assets/GENOMAS/GENERATION" + generationID.ToString() + "/");
         }
-        string path = "Assets/GENOMAS/GENERATION" + generationID.ToString() + "/" + "genoma" + generationID.ToString() + "_" + genomaID.ToString() + ".txt";
+        string path = "Assets/GENOMAS/GENERATION" + generationID.ToString() + "/" + "g" + generationID.ToString() + "_" + genomaID.ToString() + ".txt";
         File.Delete(path);
         StreamWriter writer = new StreamWriter(path, true);
 
@@ -245,6 +245,31 @@ public class Genoma
                 writer.WriteLine("");
             }
             writer.WriteLine("");
+        }
+        writer.Close();
+    }
+
+    public void SaveCsv()
+    {
+        int i, j, k;
+        if (!Directory.Exists("Assets/GENOMAS/GENERATION" + generationID.ToString() + "/"))
+        {
+            Directory.CreateDirectory("Assets/GENOMAS/GENERATION" + generationID.ToString() + "/");
+        }
+        string path = "Assets/GENOMAS/GENERATION" + generationID.ToString() + "/" + "g" + generationID.ToString() + "_" + genomaID.ToString() + ".csv";
+        File.Delete(path);
+        StreamWriter writer = new StreamWriter(path, true);
+
+        for (i = 0; i < 6; i++)
+        {
+            for (j = 0; j < 4; j++)
+            {
+                for (k = 0; k < 3; k++)
+                {
+                    writer.Write(genes[i, j, k].ToString() + ";");
+                }
+                writer.WriteLine("");
+            }
         }
         writer.Close();
     }
@@ -302,7 +327,6 @@ public class Genoma
         return pos;
     }
 
-
     public void SetFitness(float f)
     {
         fitness = f;
@@ -322,6 +346,8 @@ public class Generation
     int nIndividuos;
     public int generationID;
     public float ratioElite = 0.08f;
+    public float ratioMutation = 0.01f;
+    public int puntosCruce = 2;
 
     public float maxFitness, minFitness;
 
@@ -365,8 +391,9 @@ public class Generation
                 {
                     // Crea un hijo con la probabilidad media entre el padre actual y uno aleatorio de la lista
                     // Un poco "chapucero" pero se puede cambiar. Puede dar emparejamiento con sigo mismo
-
-                    individuos.Add(new Genoma(g, randomGenoma, 3, generationID, individuos.Count));
+                    Genoma hijo = new Genoma(g, randomGenoma, puntosCruce, generationID, individuos.Count);
+                    hijo.ratioMutation = ratioMutation;
+                    individuos.Add(hijo);
                 }
                 
                 if (individuos.Count >= nIndividuos) break;
@@ -408,6 +435,7 @@ public class Generation
 
     public void Save()
     {
+        // GUARDAR DATOS DE LA GENERACIÓN, INDIVIDUOS Y SU FITNESS
         if (!Directory.Exists("Assets/GENOMAS/DataGeneraciones/"))
         {
             Directory.CreateDirectory("Assets/GENOMAS/DataGeneraciones/");
@@ -417,9 +445,10 @@ public class Generation
         File.Delete(path);
         StreamWriter writer = new StreamWriter(path, true);
 
+        // GUARDAR CADA GENOMA
         foreach (Genoma individuo in individuos)
         {
-            individuo.Save();
+            individuo.SaveCsv();
 
             writer.WriteLine(individuo.genomaID.ToString() + " :  " + individuo.fitness);
         }

@@ -8,8 +8,10 @@ public class ProbarGenoma : MonoBehaviour
     private GameObject arania;
     public Transform puntoTest;
     public TextAsset genomaTexto;
+    public TextAsset genomaCsv;
     public bool ProbarON;
     public Genoma genomaPrueba;
+    public bool Txt0Csv1;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +20,8 @@ public class ProbarGenoma : MonoBehaviour
         {
             genomaPrueba = new Genoma(8, 8);
             arania = Instantiate(araniaModelo, puntoTest.position, Quaternion.identity);
-            Leer();
+            if (Txt0Csv1) LeerCsv();
+            else LeerTxt();
             arania.GetComponent<ScriptArania>().InitArania(genomaPrueba);
         }
     }
@@ -29,7 +32,7 @@ public class ProbarGenoma : MonoBehaviour
         
     }
 
-    void Leer()
+    void LeerTxt()
     {
         string texto = genomaTexto.text;
         string[] datos = texto.Split(" "[0]);
@@ -38,6 +41,21 @@ public class ProbarGenoma : MonoBehaviour
         for(i = 0; i<72; i++)
         {
             genes[((i/3)/4)%6, (i/3)%4, i%3] = float.Parse(datos[i]);
+            //Los índices son para pasar de un array a la hipermatriz
+        }
+
+        genomaPrueba.SetGenes(genes);
+    }
+
+    void LeerCsv()
+    {
+        string texto = genomaCsv.text;
+        string[] datos = texto.Split(";"[0]);
+        float[,,] genes = new float[6, 4, 3];
+        int i;
+        for (i = 0; i < 72; i++)
+        {
+            genes[((i / 3) / 4) % 6, (i / 3) % 4, i % 3] = float.Parse(datos[i]);
             //Los índices son para pasar de un array a la hipermatriz
         }
 

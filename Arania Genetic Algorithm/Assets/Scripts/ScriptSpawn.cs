@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 // Uso una lista de arañas, a las cuales le voy asociando los valores de cada generación
 // Este uso hace el código algo engorroso, pero la información se queda definida en las clases de Genoma y Generation
@@ -15,6 +16,9 @@ public class ScriptSpawn : MonoBehaviour
     public int size_generacion = 5;
     public int NGeneraciones = 10;
     public float segundosGeneration = 5;
+    public float RatioMutation = 0.0f;
+    public float RatioElite = 0.08f;
+    public int PuntosCruce = 2;
 
     [Space(15)]
     [Header("Variables de la simulación")]
@@ -51,6 +55,9 @@ public class ScriptSpawn : MonoBehaviour
         if (ExperimentoON)
         {
             generation = new Generation(size_generacion, 0);
+            generation.ratioElite = RatioElite;
+            generation.ratioMutation = RatioMutation;
+            generation.puntosCruce = PuntosCruce;
 
 
             if (DropDownSerieParalelo == SerieParalelo.Paralelo)
@@ -74,6 +81,7 @@ public class ScriptSpawn : MonoBehaviour
         {
             Time.timeScale = TimeScale; // Se puede poner en Start si no quiero modificarlo mientras está running
         }
+        else Time.timeScale = 1f;
 
         if (ExperimentoON)
         {
@@ -95,9 +103,12 @@ public class ScriptSpawn : MonoBehaviour
 
                     print(Time.realtimeSinceStartup);
 
-                    generation.Save();
+                    SaveData(generation);
 
-                    generation = new Generation(generation);
+                    generation = new Generation(generation);    //Se crea la nueva generación
+                    generation.ratioElite = RatioElite;
+                    generation.ratioMutation = RatioMutation;
+                    generation.puntosCruce = PuntosCruce;
                     individuosSimulados = 0;
                 }
 
@@ -129,5 +140,21 @@ public class ScriptSpawn : MonoBehaviour
             }
         }
         else ExperimentoON = false;
+    }
+
+    public void SaveData(Generation gn)
+    {
+        gn.Save();  // Guardar datos de la generación y todos los genomas
+
+        // Añadir mejor y peor fitness a archivo de datos:
+        if (!Directory.Exists("Assets/GENOMAS/DataGlobal/"))
+        {
+            Directory.CreateDirectory("Assets/GENOMAS/DataGlobal/");
+        }
+        string path = "Assets/GENOMAS/DataGlobal/FitnessValues.csv";
+        if(gn.generationID == 0)File.Delete(path);
+        StreamWriter writer = new StreamWriter(path, true);
+        writer.WriteLine(gn.maxFitness.ToString() + ";" + gn.minFitness + ";");
+        writer.Close();
     }
 }
