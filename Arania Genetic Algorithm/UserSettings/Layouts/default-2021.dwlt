@@ -43,8 +43,8 @@ MonoBehaviour:
     y: 0
     width: 486.40002
     height: 220.4
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 19}
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 91
+  controlID: 110
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -119,8 +119,8 @@ MonoBehaviour:
     y: 0
     width: 367.19995
     height: 730.8
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -145,8 +145,8 @@ MonoBehaviour:
     y: 0
     width: 284.8
     height: 510.4
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -319,8 +319,8 @@ MonoBehaviour:
     y: 0
     width: 884.00006
     height: 510.4
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -396,22 +396,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/GENOMAS
+    - Assets/Scripts
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/GENOMAS
+  - Assets/Scripts
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\TFG\Arania-Genenetic-Algorithm\Arania Genetic Algorithm
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: 585a0000
-    m_LastClickedID: 23128
-    m_ExpandedIDs: 000000004e5a0000585a000000ca9a3bffffff7f
+    m_SelectedIDs: 5e5a0000
+    m_LastClickedID: 23134
+    m_ExpandedIDs: 00000000525a000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -439,7 +439,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000004e5a0000
+    m_ExpandedIDs: 00000000525a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -567,7 +567,7 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: 38100000
       m_LastClickedID: 0
       m_ExpandedIDs: 38fbffff
       m_RenameOverlay:
@@ -818,9 +818,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 7.7942863, y: 0.16451104, z: -6.3266706}
+    m_Target: {x: 6.9773283, y: 1.2189999, z: -12.978507}
     speed: 2
-    m_Value: {x: 7.7942863, y: 0.16451104, z: -6.3266706}
+    m_Value: {x: 6.9773283, y: 1.2189999, z: -12.978507}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -867,13 +867,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.25887293, y: 0.66719043, z: -0.26774415, w: -0.645147}
+    m_Target: {x: -0.27306566, y: 0.65242964, z: -0.27325383, w: -0.65204495}
     speed: 2
-    m_Value: {x: -0.25887296, y: 0.66719043, z: -0.26774415, w: -0.6451471}
+    m_Value: {x: -0.27305752, y: 0.6524102, z: -0.2732457, w: -0.6520255}
   m_Size:
-    m_Target: 2.2392838
+    m_Target: 1.8550769
     speed: 2
-    m_Value: 2.2392838
+    m_Value: 1.8550769
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1012,7 +1012,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 584
-    width: 680.6
+    width: 681.4
     height: 199.4
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:

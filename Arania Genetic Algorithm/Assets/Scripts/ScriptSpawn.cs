@@ -35,6 +35,7 @@ public class ScriptSpawn : MonoBehaviour
     [Header("Seguimiento")]
 
     public int GenerationActual = 0;
+    public bool TERMINADO = false;
     public List<GameObject> aranias = new List<GameObject>();
 
     
@@ -139,7 +140,11 @@ public class ScriptSpawn : MonoBehaviour
                 aranias.Add(nuevaArania);
             }
         }
-        else ExperimentoON = false;
+        else
+        {
+            ExperimentoON = false;
+            TERMINADO = true;
+        } 
     }
 
     public void SaveData(Generation gn)
@@ -147,14 +152,50 @@ public class ScriptSpawn : MonoBehaviour
         gn.Save();  // Guardar datos de la generación y todos los genomas
 
         // Añadir mejor y peor fitness a archivo de datos:
-        if (!Directory.Exists("Assets/GENOMAS/DataGlobal/"))
+        if (!Directory.Exists("Assets/GENOMAS/EXPERIMENTO/DataGlobal/"))
         {
-            Directory.CreateDirectory("Assets/GENOMAS/DataGlobal/");
+            Directory.CreateDirectory("Assets/GENOMAS/EXPERIMENTO/DataGlobal/");
         }
-        string path = "Assets/GENOMAS/DataGlobal/FitnessValues.csv";
+        string path = "Assets/GENOMAS/EXPERIMENTO/DataGlobal/FitnessValues.csv";
         if(gn.generationID == 0)File.Delete(path);
         StreamWriter writer = new StreamWriter(path, true);
         writer.WriteLine(gn.maxFitness.ToString() + ";" + gn.minFitness + ";");
         writer.Close();
+    }
+
+    public void Restart(int size, int NumGen, int secs, float rM, float rE, int pC)
+    {
+        print("NUEVO EXPERIMENTO");
+
+        size_generacion = size;
+        NGeneraciones = NumGen;
+        segundosGeneration = secs;
+        RatioMutation = rM;
+        RatioElite = rE;
+        PuntosCruce = pC;
+
+        TERMINADO = false;
+        ExperimentoON = true;
+
+        if (!Mostrar)
+        {
+            Renderer[] renderChildren = araniaOriginal.GetComponentsInChildren<Renderer>();
+            foreach (Renderer r in renderChildren) r.enabled = false;
+        }
+
+        generation = new Generation(size_generacion, 0);
+        generation.ratioElite = RatioElite;
+        generation.ratioMutation = RatioMutation;
+        generation.puntosCruce = PuntosCruce;
+
+
+        if (DropDownSerieParalelo == SerieParalelo.Paralelo)
+        {
+            IndividuosPorTanda = size_generacion;
+        }
+
+        RespawnAranias();
+
+        individuosSimulados = 0;
     }
 }
