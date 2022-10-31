@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 
 public class VariosExps : MonoBehaviour
@@ -39,13 +40,21 @@ public class VariosExps : MonoBehaviour
         {
             if (PuntoSpawn.TERMINADO)
             {
+                // Ponerle el nombre correcto a la carpeta del experimento:
+                if (Directory.Exists("Assets/GENOMAS/EXPERIMENTO/"))
+                {
+                    string pathNuevo = "Assets/GENOMAS/EXP" + ExpsTerm.ToString() + "/";
+                    if (Directory.Exists(pathNuevo))
+                    {
+                        Directory.Delete(pathNuevo, true);
+                    }
+                    System.IO.Directory.Move("Assets/GENOMAS/EXPERIMENTO/", pathNuevo);
+                }
+                //------------
+
                 if (ExpsTerm < NumExperimentos)
                 {
                     PuntoSpawn.Restart(sizes[ExpsTerm], numGener[ExpsTerm], secs[ExpsTerm], rM[ExpsTerm], rE[ExpsTerm], pC[ExpsTerm]);
-
-                    // Ponerle el nombre correcto a la carpeta del experimento:
-
-                    //______________________
                     ExpsTerm++;
                 }
                 else
@@ -67,7 +76,7 @@ public class VariosExps : MonoBehaviour
         texto = texto.Replace('.', ',');
         string[] datos = texto.Split(";"[0]);
 
-        //NumExperimentos = datos.Length/6;
+        NumExperimentos = datos.Length/6;
         //sizes = new List<int>(NumExperimentos);
         sizes = new List<int>();
         numGener = new List<int>();
@@ -86,6 +95,5 @@ public class VariosExps : MonoBehaviour
             rE.Add(float.Parse(datos[i * 6 + 4]));
             pC.Add(int.Parse(datos[i * 6 + 5]));
         }
-        
     }
 }

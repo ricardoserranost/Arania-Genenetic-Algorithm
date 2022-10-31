@@ -1529,8 +1529,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PuntoSpawn: {fileID: 976629044}
   Experimentos: {fileID: 4900000, guid: ab31fa7887dad3e4db304d35592bef99, type: 3}
-  VariosExperimentosON: 1
-  NumExperimentos: 2
+  VariosExperimentosON: 0
+  NumExperimentos: 1
 --- !u!4 &505051853
 Transform:
   m_ObjectHideFlags: 0
@@ -1677,8 +1677,8 @@ MonoBehaviour:
   araniaModelo: {fileID: 1673560045}
   puntoTest: {fileID: 758273451}
   genomaTexto: {fileID: 4900000, guid: d9dfac05d06857a46bf6531fb44cf2be, type: 3}
-  genomaCsv: {fileID: 4900000, guid: 71c0cc1ec87dd5546af3a7fc6bec39de, type: 3}
-  ProbarON: 0
+  genomaCsv: {fileID: 4900000, guid: 0d943114814a0954cbb872c2e87443f4, type: 3}
+  ProbarON: 1
   Txt0Csv1: 1
 --- !u!4 &758273451
 Transform:
@@ -1810,17 +1810,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   araniaOriginal: {fileID: 320201666}
   puntoSpawn: {fileID: 976629045}
-  size_generacion: 20
+  size_generacion: 40
   NGeneraciones: 2
   segundosGeneration: 10
   RatioMutation: 0.01
   RatioElite: 0.1
   PuntosCruce: 1
-  ExperimentoON: 1
+  ExperimentoON: 0
   Mostrar: 1
-  OptimizarRendimiento: 1
+  OptimizarRendimiento: 0
   TimeScale: 5
-  DropDownSerieParalelo: 1
+  DropDownSerieParalelo: 0
   IndividuosPorTanda: 40
   GenerationActual: 0
   TERMINADO: 0
@@ -2098,9 +2098,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   araniaModelo: {fileID: 1673560045}
   puntoTest: {fileID: 2092707227}
-  genomaTexto: {fileID: 4900000, guid: aaef88343ef8a024dac762bd084db13c, type: 3}
-  genomaCsv: {fileID: 4900000, guid: 53652310b8741a64596c037553fc12ff, type: 3}
-  ProbarON: 0
+  genomaTexto: {fileID: 4900000, guid: 9062d3a6c9f8e3f439b361861eae5ebe, type: 3}
+  genomaCsv: {fileID: 4900000, guid: c8328932db09aa34182d720139df4a63, type: 3}
+  ProbarON: 1
   Txt0Csv1: 1
 --- !u!4 &2092707227
 Transform:
