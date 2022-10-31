@@ -40,9 +40,25 @@ public class VariosExps : MonoBehaviour
         {
             if (PuntoSpawn.TERMINADO)
             {
-                // Ponerle el nombre correcto a la carpeta del experimento:
+                
                 if (Directory.Exists("Assets/GENOMAS/EXPERIMENTO/"))
                 {
+                    //Añadir archivo con los parámetros del experimento:
+                    if (ExpsTerm > 0)
+                    {
+                        string path = "Assets/GENOMAS/EXPERIMENTO/parametros.csv";
+                        File.Delete(path);
+                        StreamWriter writer = new StreamWriter(path, true);
+                        writer.WriteLine("Individuos por generación: " + sizes[ExpsTerm - 1].ToString());
+                        writer.WriteLine("Número de generaciones: " + numGener[ExpsTerm - 1].ToString());
+                        writer.WriteLine("Segundos: " + secs[ExpsTerm - 1].ToString());
+                        writer.WriteLine("Ratio de mutación: " + rM[ExpsTerm - 1].ToString());
+                        writer.WriteLine("Ratio de élite: " + rE[ExpsTerm - 1].ToString());
+                        writer.WriteLine("Puntos de cruce del genoma: " + pC[ExpsTerm - 1].ToString());
+                        writer.Close();
+                    }
+
+                    // Ponerle el nombre correcto a la carpeta del experimento:
                     string pathNuevo = "Assets/GENOMAS/EXP" + ExpsTerm.ToString() + "/";
                     if (Directory.Exists(pathNuevo))
                     {
