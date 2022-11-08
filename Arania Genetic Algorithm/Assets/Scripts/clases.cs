@@ -151,7 +151,7 @@ public class Genoma
                     else
                     {
                         // Aquí está la función de CRUCE . Falta mucho por modificar
-                        if (section % 2 == 1) genes[i, j, k] = padre.genes[i, j, k];
+                        if (section % 2 == 0) genes[i, j, k] = padre.genes[i, j, k];
                         else genes[i, j, k] = madre.genes[i, j, k];
                     }
 
@@ -252,11 +252,11 @@ public class Genoma
     public void SaveCsv()
     {
         int i, j, k;
-        if (!Directory.Exists("Assets/GENOMAS/GENERATION" + generationID.ToString() + "/"))
+        if (!Directory.Exists("Assets/GENOMAS/EXPERIMENTO/GENERATION" + generationID.ToString() + "/"))
         {
-            Directory.CreateDirectory("Assets/GENOMAS/GENERATION" + generationID.ToString() + "/");
+            Directory.CreateDirectory("Assets/GENOMAS/EXPERIMENTO/GENERATION" + generationID.ToString() + "/");
         }
-        string path = "Assets/GENOMAS/GENERATION" + generationID.ToString() + "/" + "g" + generationID.ToString() + "_" + genomaID.ToString() + ".csv";
+        string path = "Assets/GENOMAS/EXPERIMENTO/GENERATION" + generationID.ToString() + "/" + "g" + generationID.ToString() + "_" + genomaID.ToString() + ".csv";
         File.Delete(path);
         StreamWriter writer = new StreamWriter(path, true);
 
@@ -436,12 +436,12 @@ public class Generation
     public void Save()
     {
         // GUARDAR DATOS DE LA GENERACIÓN, INDIVIDUOS Y SU FITNESS
-        if (!Directory.Exists("Assets/GENOMAS/DataGeneraciones/"))
+        if (!Directory.Exists("Assets/GENOMAS/EXPERIMENTO/DataGeneraciones/"))
         {
-            Directory.CreateDirectory("Assets/GENOMAS/DataGeneraciones/");
+            Directory.CreateDirectory("Assets/GENOMAS/EXPERIMENTO/DataGeneraciones/");
         }
 
-        string path = "Assets/GENOMAS/DataGeneraciones/DataGeneration" + generationID.ToString()+ ".txt";
+        string path = "Assets/GENOMAS/EXPERIMENTO/DataGeneraciones/DataGeneration" + generationID.ToString()+ ".txt";
         File.Delete(path);
         StreamWriter writer = new StreamWriter(path, true);
 

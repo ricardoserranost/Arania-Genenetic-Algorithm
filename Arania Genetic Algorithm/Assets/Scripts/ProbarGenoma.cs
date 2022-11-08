@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class ProbarGenoma : MonoBehaviour
 {
@@ -50,6 +51,7 @@ public class ProbarGenoma : MonoBehaviour
     void LeerCsv()
     {
         string texto = genomaCsv.text;
+        texto = texto.Replace('.', ',');
         string[] datos = texto.Split(";"[0]);
         float[,,] genes = new float[6, 4, 3];
         int i;
@@ -58,7 +60,6 @@ public class ProbarGenoma : MonoBehaviour
             genes[((i / 3) / 4) % 6, (i / 3) % 4, i % 3] = float.Parse(datos[i]);
             //Los índices son para pasar de un array a la hipermatriz
         }
-
         genomaPrueba.SetGenes(genes);
     }
 }
