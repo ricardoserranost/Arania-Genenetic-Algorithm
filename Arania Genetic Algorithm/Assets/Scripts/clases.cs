@@ -151,7 +151,7 @@ public class Genoma
                     else
                     {
                         // Aquí está la función de CRUCE . Falta mucho por modificar
-                        if (section % 2 == 1) genes[i, j, k] = padre.genes[i, j, k];
+                        if (section % 2 == 0) genes[i, j, k] = padre.genes[i, j, k];
                         else genes[i, j, k] = madre.genes[i, j, k];
                     }
 
