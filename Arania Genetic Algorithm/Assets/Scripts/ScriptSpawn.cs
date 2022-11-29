@@ -100,6 +100,7 @@ public class ScriptSpawn : MonoBehaviour
                     generation.maxFitness = generation.individuos[0].fitness;
                     generation.minFitness = generation.individuos[generation.individuos.Count - 1].fitness;
                     generation.NormalizarFitness();
+                    //generation.ProbabilidadSumaTotal(); // Esto cambia las probabilidades!!! No parece ayudar
 
 
                     print(Time.realtimeSinceStartup);

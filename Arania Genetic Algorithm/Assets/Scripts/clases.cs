@@ -387,13 +387,18 @@ public class Generation
             {
                 float chance = Random.value;
                 Genoma randomGenoma = anterior.individuos[Random.Range(0, anterior.individuos.Count)];
-                if (chance < ((g.fitness + randomGenoma.fitness) / 2f))
+                if(randomGenoma.GetHashCode() != g.GetHashCode())
                 {
-                    // Crea un hijo con la probabilidad media entre el padre actual y uno aleatorio de la lista
-                    // Un poco "chapucero" pero se puede cambiar. Puede dar emparejamiento con sigo mismo
-                    Genoma hijo = new Genoma(g, randomGenoma, puntosCruce, generationID, individuos.Count);
-                    hijo.ratioMutation = ratioMutation;
-                    individuos.Add(hijo);
+                    if (chance < ((g.fitness + randomGenoma.fitness) / 2f))
+                    {
+                        // Crea un hijo con la probabilidad media entre el padre actual y uno aleatorio de la lista
+                        // Un poco "chapucero" pero se puede cambiar. Puede dar emparejamiento con sigo mismo
+
+
+                        Genoma hijo = new Genoma(g, randomGenoma, puntosCruce, generationID, individuos.Count);
+                        hijo.ratioMutation = ratioMutation;
+                        individuos.Add(hijo);
+                    }
                 }
                 
                 if (individuos.Count >= nIndividuos) break;
@@ -469,6 +474,20 @@ public class Generation
         {
             //NORMALIZO la fitness para ser sobre 1
             ind.SetFitness((ind.GetFitness() - minFitness) / (maxFitness - minFitness));
+        }
+    }
+
+    public void ProbabilidadSumaTotal()
+    {
+        // En la fitness de cada individuo mete fitness(i)/sumatorio(fitness)
+        float suma = 0;
+        foreach(Genoma ind in individuos)
+        {
+            suma += ind.GetFitness();
+        }
+        foreach(Genoma ind in individuos)
+        {
+            ind.SetFitness(ind.GetFitness() / suma);
         }
     }
 
