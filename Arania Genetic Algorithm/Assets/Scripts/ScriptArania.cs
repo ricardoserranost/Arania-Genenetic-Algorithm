@@ -7,6 +7,7 @@ public class ScriptArania : MonoBehaviour {
     public List<MoverSenoidal> coxas = new List<MoverSenoidal>();
     // Para guardar los puntos por los que va pasando:
     private float tiempoInicial, ultimoTiempo;
+    private float rotationAnterior = 0, rotationAbsoluta = 0;
     private List<Vector3> trayectoriaPosiciones = new List<Vector3>();
     private List<float> trayectoriaRotation = new List<float>();
 
@@ -27,7 +28,7 @@ public class ScriptArania : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
         // Se guarda 1 dato de forma periódica
-		if((Time.time - ultimoTiempo) > 0.5)
+		if((Time.time - ultimoTiempo) >= 0.5)
         {
             // x es el frente de la araña
             // y es el "lateral" hacia la izquierda
@@ -38,15 +39,22 @@ public class ScriptArania : MonoBehaviour {
             float z = transform.Find("thorax").position[1] - transform.position[1];
             trayectoriaPosiciones.Add(new Vector3(x, y, z));
 
-            //Guardo la rotación en el eje vertical
-
-            trayectoriaRotation.Add((Mathf.Atan2(transform.Find("thorax").right.z, transform.Find("thorax").right.x)) * 360 / (2 * Mathf.PI));
-
-            //Cosas que NO funcionan
-            //trayectoriaRotation.Add((transform.Find("thorax").localRotation * Quaternion.Inverse(transform.localRotation)).eulerAngles.y);
-            //print((transform.Find("thorax").localRotation * Quaternion.Inverse(transform.localRotation)).eulerAngles);
-            //print(transform.Find("thorax").right);
+            // Guardo la rotación en el eje vertical
+            // La rotación absoluta permite saber el ángulo girado desde el instante inicial
+            float rotation = (Mathf.Atan2(transform.Find("thorax").right.z, transform.Find("thorax").right.x)) * 360 / (2 * Mathf.PI);
+            if (Mathf.Abs(rotation-rotationAnterior) < 170)
+            {
+                rotationAbsoluta += (rotation-rotationAnterior);
+            }
+            else
+            {
+                // Este es el caso en el que la rotacións se ha "pasado" de rango (p. ej. de 179 a -179)
+                if (rotation < 0) rotationAbsoluta += (180 + rotation + 180 - rotationAnterior);
+                else rotationAbsoluta -= (180 - rotation + 180 + rotationAnterior);
+            }
+            trayectoriaRotation.Add(rotationAbsoluta);
             ultimoTiempo = Time.time;
+            rotationAnterior = rotation;
         }
 	}
 
@@ -81,12 +89,16 @@ public class ScriptArania : MonoBehaviour {
         // -----------------------------------------
         // Aquí se implementa la FUNCIÓN DE FITNESS
         // -----------------------------------------
-        
-        // Teniendo en cuenta solo la posición inicial:
 
-        return fitnessRegreLineal();
+        // Para la regresión lineal (ir hacia "delante"):
+        //return fitnessRegreLineal();
 
+        // Para la rotación sobre el eje vertical
+        return fitnessGirar();
+
+        // Solo teniendo en cuenta la pos inicial y final (OBSOLETA):
         //return ((-transform.Find("thorax").position[0] + transform.position[0]) - 0.4f*Mathf.Abs(transform.Find("thorax").position[2] - transform.position[2]));
+
     }
 
     private float FitnessRCuadrado()
@@ -142,11 +154,35 @@ public class ScriptArania : MonoBehaviour {
         // AQUÍ entra el fitness, donde se pondera cada parámetro
         // Es donde se pueden probar varios
         float alpha = Mathf.Abs(Mathf.Atan2(m, 1))/(Mathf.PI/2);    // Ángulo que forma con la horizontal normalizado a 1
-        fitness = (trayectoriaPosiciones[n-1].x + sumx/n) * (1 + r2 - alpha) - Mathf.Abs(y0);
+        fitness = (trayectoriaPosiciones[n-1].x + sumx/n) * (1 + 0.5f*r2 - 2.5f*alpha) - Mathf.Abs(y0);
         //Tengo en cuenta la posición final, la posición media(como si contase la "integral", lo recta que es la tray. y la y0)
 
         // print(trayectoriaPosiciones[n - 1].x.ToString() + " m: " + m.ToString() + " y0: " + y0.ToString() +  " alpha: " + alpha.ToString() + " r2: " + r2.ToString() + " n: " + n.ToString() + " fitness: " + fitness.ToString());
         //print("SCE: " + SCE.ToString() + "SCT: " + SCT.ToString());
+        return fitness;
+    }
+
+    public float fitnessGirar()
+    {
+        float fitness = 0, rotMedia = 0, distMedia = 0;
+        int n = trayectoriaRotation.Count;
+        // Calcular el ángulo acumulado
+        // El ángulo instantáneo va de -180 a 180
+
+        foreach(float r in trayectoriaRotation)
+        {
+            rotMedia += r;
+        }
+        rotMedia = rotMedia / n;
+
+        foreach(Vector3 pos in trayectoriaPosiciones)
+        {
+            distMedia += Mathf.Sqrt(Mathf.Pow(pos.x, 2) + Mathf.Pow(pos.y, 2));
+        }
+        distMedia = distMedia / n;
+
+        fitness = rotMedia / (1 + 10 * distMedia * distMedia);  // El 50 es para ajustar las unidades de distancia
+
         return fitness;
     }
 

@@ -166,9 +166,9 @@ public class Genoma
         float max = 0, min = 0;
         switch (j)
         {
-            case 0:                                         // frecuencia
+            case 0:                                         // frecuencia (estaba a 1.5)
                 {
-                    max = 1.5f;
+                    max = 1f;
                     min = 0f;
                     break;
                 }
@@ -453,7 +453,8 @@ public class Generation
         // GUARDAR CADA GENOMA
         foreach (Genoma individuo in individuos)
         {
-            individuo.SaveCsv();
+            // No guardo todos los individuos, por aligerar:
+            if (individuo.generationID % 10 == 9) individuo.SaveCsv();
 
             writer.WriteLine(individuo.genomaID.ToString() + " :  " + individuo.fitness);
         }
@@ -466,6 +467,9 @@ public class Generation
     public void Sort()
     {
         individuos.Sort(CompararFitness);
+
+        maxFitness = individuos[0].fitness;
+        minFitness = individuos[individuos.Count - 1].fitness;
     }
 
     public void NormalizarFitness()
