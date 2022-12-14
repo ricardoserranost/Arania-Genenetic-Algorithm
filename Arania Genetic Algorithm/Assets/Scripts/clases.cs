@@ -18,27 +18,19 @@ public class Genoma
     {
         genomaID = genoma;
         generationID = generation;
-        int i, j;
+        int i, j, k;
 
         genes = new float[6, 4, 3];     // Pata, parámetro, articulación
 
         for(i = 0; i<6; i++)
         {
-            for(j = 0; j<3; j++)
+            for(j = 0; j<4; j++)
             {
-                genes[i, 0, j] = Random.Range(0f, 1.5f);            //frecuencia
-                genes[i, 1, j] = Random.Range(0f, 2 * Mathf.PI);    //desfase
+                for(k=0; k<3; k++)
+                {
+                    genes[i, j, k] = NewGen(i, j, k);
+                }
             }
-
-            genes[i, 2, 0] = Random.Range(0f, 45f);                 //amplitud coxa
-            genes[i, 2, 1] = Random.Range(0f, 45f);                 //amplitud femur
-            genes[i, 2, 2] = Random.Range(0f, 45f);                 //amplitud tibia
-
-            
-            genes[i, 3, 0] = (Random.Range(genes[i, 2, 0] - 60, 60 - genes[i, 2, 0])) / 2f;                 //pos_central coxa 
-            genes[i, 3, 1] = (Random.Range(genes[i, 2, 1] - 90, 90 - genes[i, 2, 1])) / 2f;                 //pos_central femur
-            genes[i, 3, 2] = (Random.Range(genes[i, 2, 2] - 65, 55 - genes[i, 2, 2])) / 2f;                 //pos_central tibia
-            //Divido entre 2 los valores para no llegar a posiciones "extrañas"
         }
     }
 
@@ -146,7 +138,8 @@ public class Genoma
                 {
                     if (Random.value < ratioMutation)
                     {
-                        genes[i, j, k] = NewGen(i, j, k);   // Mutar un gen
+                        genes[i, j, k] = (NewGen(i, j, k) + genes[i, j, k]) / 2f;   // Mutar un gen
+                        //Hago la media entre un valor aleatorio y el actual
                     }
                     else
                     {
@@ -168,7 +161,7 @@ public class Genoma
         {
             case 0:                                         // frecuencia (estaba a 1.5)
                 {
-                    max = 1f;
+                    max = 0.75f;
                     min = 0f;
                     break;
                 }
@@ -196,17 +189,17 @@ public class Genoma
                             }
                         case 1:
                             {
-                                max = (90 - genes[i, 2, 1]) / 2f;
-                                min = (genes[i, 2, 0] - 90) / 2f;
+                                max = (80 - genes[i, 2, 1]) / 2f;
+                                min = (genes[i, 2, 0] - 80) / 2f;
                                 break;
                             }
                         case 2:
                             {
-                                max = (65 - genes[i, 2, 2]) / 2f;
+                                max = (55 - genes[i, 2, 2]) / 2f;
                                 min = (genes[i, 2, 0] - 65) / 2f;
                                 break;
                             }
-
+                            //Divido entre 2 los valores para no llegar a posiciones "extrañas"
                     }
                     break;
                 }

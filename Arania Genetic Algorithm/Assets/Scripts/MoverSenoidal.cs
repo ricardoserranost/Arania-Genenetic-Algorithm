@@ -25,21 +25,21 @@ public class MoverSenoidal : MonoBehaviour {
     {
         // VALORES DE ARTICULATION BODY
         drive_coxa = coxa.GetComponent<ArticulationBody>().xDrive;
-        drive_coxa.forceLimit = 10f;   // Estimado como 10 kgf*cm, la pongo mayor por haber estimado masas tmbn
+        drive_coxa.forceLimit = 5f;   // Estimado como 10 kgf*cm, la pongo mayor por haber estimado masas tmbn
         drive_coxa.stiffness = 500f;     // Valor alto para que siga la trayectoria fielmente
         drive_coxa.damping = 15;         // Valor experimental, conviene probar y cambiarlo
         coxa.GetComponent<ArticulationBody>().xDrive = drive_coxa;
         coxa.GetComponent<ArticulationBody>().mass = 0.13f;     // 130 g (2 motores (55 g), piezas, tornillos)
 
         drive_femur = femur.GetComponent<ArticulationBody>().xDrive;
-        drive_femur.forceLimit = 10f;
+        drive_femur.forceLimit = 5f;
         drive_femur.stiffness = 500f;
         drive_femur.damping = 15;
         femur.GetComponent<ArticulationBody>().xDrive = drive_femur;
         femur.GetComponent<ArticulationBody>().mass = 0.8f;    // 80? 40 g (2 placas, tornillos)
 
         drive_tibia = tibia.GetComponent<ArticulationBody>().xDrive;
-        drive_tibia.forceLimit = 10f;
+        drive_tibia.forceLimit = 5f;
         drive_tibia.stiffness = 500f;
         drive_tibia.damping = 15;
         tibia.GetComponent<ArticulationBody>().xDrive = drive_tibia;

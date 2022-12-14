@@ -84,6 +84,18 @@ public class ScriptArania : MonoBehaviour {
         }
     }
 
+    public void printTrayectoria()
+    {
+        foreach (Vector3 punto in trayectoriaPosiciones)
+        {
+            print(punto);
+        }
+        foreach (float rot in trayectoriaRotation)
+        {
+            print(rot);
+        }
+    }
+
     public float GetFitness()
     {
         // -----------------------------------------
@@ -94,28 +106,14 @@ public class ScriptArania : MonoBehaviour {
         //return fitnessRegreLineal();
 
         // Para la rotación sobre el eje vertical
-        return fitnessGirar();
+        // return fitnessGirar();
+
+        //Para la regresión lineal (ir hacia "delante") pero teniendo en cuenta la rot máxima:
+        return fitnessRegreLinealYRot();
 
         // Solo teniendo en cuenta la pos inicial y final (OBSOLETA):
         //return ((-transform.Find("thorax").position[0] + transform.position[0]) - 0.4f*Mathf.Abs(transform.Find("thorax").position[2] - transform.position[2]));
 
-    }
-
-    private float FitnessRCuadrado()
-    {
-        return 0;
-    }
-
-    public void printTrayectoria()
-    {
-        foreach(Vector3 punto in trayectoriaPosiciones)
-        {
-            print(punto);
-        }
-        foreach(float rot in trayectoriaRotation)
-        {
-            print(rot);
-        }
     }
 
     public float fitnessRegreLineal()
@@ -151,15 +149,26 @@ public class ScriptArania : MonoBehaviour {
         // R-cuadrado: 0 si no se parece a una recta, 1 si sí
         r2 = 1 - SCE / SCT;
 
+
+        float alpha = Mathf.Abs(Mathf.Atan2(m, 1)) / (Mathf.PI / 2);    // Ángulo que forma con la horizontal normalizado a 1
         // AQUÍ entra el fitness, donde se pondera cada parámetro
         // Es donde se pueden probar varios
-        float alpha = Mathf.Abs(Mathf.Atan2(m, 1))/(Mathf.PI/2);    // Ángulo que forma con la horizontal normalizado a 1
         fitness = (trayectoriaPosiciones[n-1].x + sumx/n) * (1 + 0.5f*r2 - 2.5f*alpha) - Mathf.Abs(y0);
         //Tengo en cuenta la posición final, la posición media(como si contase la "integral", lo recta que es la tray. y la y0)
-
-        // print(trayectoriaPosiciones[n - 1].x.ToString() + " m: " + m.ToString() + " y0: " + y0.ToString() +  " alpha: " + alpha.ToString() + " r2: " + r2.ToString() + " n: " + n.ToString() + " fitness: " + fitness.ToString());
-        //print("SCE: " + SCE.ToString() + "SCT: " + SCT.ToString());
         return fitness;
+    }
+
+    public float fitnessRegreLinealYRot()
+    {
+        // Igual que la fitnessRegreLinal(), pero teniendo en cuenta también que no se gire la arania
+        
+        float rotMax = 0;
+        foreach (float r in trayectoriaRotation)
+        {
+            if (r > rotMax) rotMax = r;
+        }
+
+        return fitnessRegreLineal() * (1 - rotMax / 180);
     }
 
     public float fitnessGirar()
