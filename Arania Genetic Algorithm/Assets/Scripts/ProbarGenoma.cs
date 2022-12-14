@@ -31,6 +31,13 @@ public class ProbarGenoma : MonoBehaviour
     void Update()
     {
         
+        if (!ProbarON)
+        {
+            //arania.GetComponent<ScriptArania>().printTrayectoria();
+            //print(arania.GetComponent<ScriptArania>().GetFitness());
+            //ProbarON = true;
+        }
+        
     }
 
     void LeerTxt()

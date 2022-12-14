@@ -97,14 +97,11 @@ public class ScriptSpawn : MonoBehaviour
                 if (individuosSimulados >= generation.GetNIndividuos()) // si es la última serie
                 {
                     generation.Sort();
-                    generation.maxFitness = generation.individuos[0].fitness;
-                    generation.minFitness = generation.individuos[generation.individuos.Count - 1].fitness;
+                    SaveData(generation);
                     generation.NormalizarFitness();
-
+                    //generation.ProbabilidadSumaTotal(); // Esto cambia las probabilidades!!! No parece ayudar y ralentiza
 
                     print(Time.realtimeSinceStartup);
-
-                    SaveData(generation);
 
                     generation = new Generation(generation);    //Se crea la nueva generación
                     generation.ratioElite = RatioElite;
@@ -159,7 +156,15 @@ public class ScriptSpawn : MonoBehaviour
         string path = "Assets/GENOMAS/EXPERIMENTO/DataGlobal/FitnessValues.csv";
         if(gn.generationID == 0)File.Delete(path);
         StreamWriter writer = new StreamWriter(path, true);
-        writer.WriteLine(gn.maxFitness.ToString() + ";" + gn.minFitness + ";");
+
+        //Esto solo escribe la mejor y la peor:
+        //writer.WriteLine(gn.maxFitness.ToString() + ";" + gn.minFitness + ";");
+        //Mejor guardo todas:
+        foreach(Genoma g in gn.individuos)
+        {
+            writer.Write(g.fitness.ToString() + ";");
+        }
+        writer.WriteLine("");
         writer.Close();
     }
 
