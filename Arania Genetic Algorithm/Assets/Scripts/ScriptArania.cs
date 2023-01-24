@@ -106,10 +106,10 @@ public class ScriptArania : MonoBehaviour {
         //return fitnessRegreLineal();
 
         // Para la rotación sobre el eje vertical
-        // return fitnessGirar();
+        return fitnessGirar();
 
         //Para la regresión lineal (ir hacia "delante") pero teniendo en cuenta la rot máxima:
-        return fitnessRegreLinealYRot();
+        //return fitnessRegreLinealYRot();
 
         // Solo teniendo en cuenta la pos inicial y final (OBSOLETA):
         //return ((-transform.Find("thorax").position[0] + transform.position[0]) - 0.4f*Mathf.Abs(transform.Find("thorax").position[2] - transform.position[2]));
@@ -153,7 +153,7 @@ public class ScriptArania : MonoBehaviour {
         float alpha = Mathf.Abs(Mathf.Atan2(m, 1)) / (Mathf.PI / 2);    // Ángulo que forma con la horizontal normalizado a 1
         // AQUÍ entra el fitness, donde se pondera cada parámetro
         // Es donde se pueden probar varios
-        fitness = (trayectoriaPosiciones[n-1].x + sumx/n) * (1 + 0.5f*r2 - 2.5f*alpha) - Mathf.Abs(y0);
+        fitness = (trayectoriaPosiciones[n - 1].x + sumx / n) * (1 + 0.5f * r2 - 2.5f * alpha) - 1.5f * Mathf.Abs(y0);
         //Tengo en cuenta la posición final, la posición media(como si contase la "integral", lo recta que es la tray. y la y0)
         return fitness;
     }
@@ -165,7 +165,7 @@ public class ScriptArania : MonoBehaviour {
         float rotMax = 0;
         foreach (float r in trayectoriaRotation)
         {
-            if (r > rotMax) rotMax = r;
+            if (r > Mathf.Abs(rotMax)) rotMax = Mathf.Abs(r);
         }
 
         return fitnessRegreLineal() * (1 - rotMax / 180);

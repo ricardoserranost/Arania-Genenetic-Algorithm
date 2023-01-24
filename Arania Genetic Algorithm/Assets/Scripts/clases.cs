@@ -61,9 +61,9 @@ public class Genoma
                         float max = 0, min = 0;
                         switch (j)
                         {
-                            case 0:                                         // frecuencia
+                            case 0:                                         // frecuencia (estaba a 1.5)
                                 {
-                                    max = 1.5f;
+                                    max = 0.75f;
                                     min = 0f;
                                     break;
                                 }
@@ -173,8 +173,45 @@ public class Genoma
                 }
             case 2:                                         // amplitud
                 {
-                    max = 45f;
-                    min = 0f;
+                    switch (k) { 
+                    case 0:
+                        {
+                            switch (i)
+                            {
+                                case 1:
+                                    {
+                                        max = 30f;
+                                        min = 0;
+                                        break;
+                                    }
+                                case 4:
+                                    {
+                                        max = 30f;
+                                        min = 0;
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        max = 45f;
+                                        min = 0;
+                                        break;
+                                    }
+                            }
+                            break;
+                        }
+                    case 1:
+                        {
+                            max = 45;
+                            min = 0;
+                            break;
+                        }
+                    case 2:
+                        {
+                            max = 45;
+                            min = 0;
+                            break;
+                        }
+                    }
                     break;
                 }
             case 3:                                         // pos central
@@ -245,11 +282,11 @@ public class Genoma
     public void SaveCsv()
     {
         int i, j, k;
-        if (!Directory.Exists("Assets/GENOMAS/EXPERIMENTO/GENERATION" + generationID.ToString() + "/"))
+        if (!Directory.Exists("Assets/GENOMAS/EXPERIMENTO/G" + generationID.ToString() + "/"))
         {
-            Directory.CreateDirectory("Assets/GENOMAS/EXPERIMENTO/GENERATION" + generationID.ToString() + "/");
+            Directory.CreateDirectory("Assets/GENOMAS/EXPERIMENTO/G" + generationID.ToString() + "/");
         }
-        string path = "Assets/GENOMAS/EXPERIMENTO/GENERATION" + generationID.ToString() + "/" + "g" + generationID.ToString() + "_" + genomaID.ToString() + ".csv";
+        string path = "Assets/GENOMAS/EXPERIMENTO/G" + generationID.ToString() + "/" + "g" + generationID.ToString() + "_" + genomaID.ToString() + ".csv";
         File.Delete(path);
         StreamWriter writer = new StreamWriter(path, true);
 
@@ -444,13 +481,29 @@ public class Generation
         StreamWriter writer = new StreamWriter(path, true);
 
         // GUARDAR CADA GENOMA
-        foreach (Genoma individuo in individuos)
+        // No guardo todos los individuos, por aligerar:
+        if (individuos[0].generationID % 10 == 9)
         {
-            // No guardo todos los individuos, por aligerar:
-            if (individuo.generationID % 10 == 9) individuo.SaveCsv();
-
-            writer.WriteLine(individuo.genomaID.ToString() + " :  " + individuo.fitness);
+            // Guardo todos
+            foreach (Genoma individuo in individuos)
+            {
+                // No guardo todos los individuos, por aligerar:
+                if (individuo.generationID % 10 == 9) individuo.SaveCsv();
+                writer.WriteLine(individuo.genomaID.ToString() + " :  " + individuo.fitness);
+            }
         }
+        else
+        {
+            // Guardo solo el mejor
+            individuos[0].SaveCsv();
+            foreach(Genoma individuo in individuos)
+            {
+                writer.WriteLine(individuo.genomaID.ToString() + " :  " + individuo.fitness);
+            }
+        }
+
+
+            
 
         writer.WriteLine("\nMAX FITNESS: " + maxFitness.ToString() + "\nMIN FITNESS: " + minFitness.ToString());
 

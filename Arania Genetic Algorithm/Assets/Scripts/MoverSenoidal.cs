@@ -32,7 +32,7 @@ public class MoverSenoidal : MonoBehaviour {
         coxa.GetComponent<ArticulationBody>().mass = 0.13f;     // 130 g (2 motores (55 g), piezas, tornillos)
 
         drive_femur = femur.GetComponent<ArticulationBody>().xDrive;
-        drive_femur.forceLimit = 5f;
+        drive_femur.forceLimit = 10f;
         drive_femur.stiffness = 500f;
         drive_femur.damping = 15;
         femur.GetComponent<ArticulationBody>().xDrive = drive_femur;
